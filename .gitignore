@@ -30,3 +30,8 @@ jupyter_notebooks/*.py
 
 # GitHub config
 .github/
+
+
+# Generated files
+# One reference copy of profile_report.html is included in the repo, but ignore further generated versions
+profile_report.html
