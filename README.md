@@ -1,47 +1,83 @@
-# YData Profiling POC
+# YData Profiling Teaching Demo
 
-This repository is a proof-of-concept for using **YData Profiling** with **Streamlit** to quickly generate interactive data reports.
+This repository contains a small Streamlit application that showcases how to explore a dataset with [YData Profiling](https://github.com/ydataai/ydata-profiling). Originally launched in 2016 as **pandas-profiling** and later adopted by YData, the library was built to automate the exploratory data analysis (EDA) summaries that teams often produce inside Jupyter notebooks. Its sweet spot is still notebook-based workflows—drop in a DataFrame, review the generated report, and iterate quickly.
 
-## Setup
+For teaching purposes we surface the same profiler inside a lightweight Streamlit app. Running it outside the notebook highlights how automated reports can be embedded in other tools, and it gives students who are new to Python a friendlier entry point before they dive into notebook environments.
 
-1. Install Python using `pyenv` (recommended):
+## What You Will Learn
+
+- How YData Profiling can generate rich, shareable summaries of a dataset without writing custom code for each chart.
+- How Streamlit can wrap those insights in a simple web interface for class demos or student projects.
+- How formatting and linting tools (Black and Ruff) keep Python projects clean and consistent.
+
+## Dataset Source
+
+The default dataset bundled with this demo is the Titanic passenger manifest from the C1 learning project. It offers a classic mix of categorical and numerical features that spark discussions about survival rates, class imbalance, and data quality. Feel free to swap in your own CSV to tailor the exercise to your cohort.
+
+## Prerequisites
+
+- Python 3.11 (the project was tested with 3.11.13).
+- `pyenv` (optional) if you want to manage multiple Python versions locally.
+- Access to a developer environment that already has the `make` command available. Setting up Make on macOS or Windows (via WSL or developer tooling) is assumed to be covered in earlier course setup materials.
+- Basic command-line familiarity.
+
+## Setup Instructions (with Explanations)
+
+1. **Create your copy of the project.** The easiest path is to click "Use this template" on GitHub, which gives you a fresh repository instantly. Forking or cloning this repo works as well if you prefer to keep a connection to the original.
+
+2. **Select the Python version** (optional but recommended if you use `pyenv`):
+   ```bash
+   pyenv install 3.11.13
+   pyenv local 3.11.13
    ```
-   pyenv install 3.11.5
-   pyenv virtualenv 3.11.5 ydata-poc
-   pyenv activate ydata-poc
-   ```
+   This pins your interpreter so everyone in the class runs the same Python build.
 
-2. Create and activate a virtual environment:
-   ```
+3. **Create and activate a virtual environment** to isolate dependencies:
+   ```bash
    python -m venv .venv
    source .venv/bin/activate
    ```
 
-3. Install required packages:
-   ```
+4. **Install the required packages**:
+   ```bash
    pip install -r requirements.txt
    ```
+   This pulls in Streamlit, YData Profiling, and helper libraries used by the app.
 
-## Usage
+## Running the Demo
 
-Use the provided Makefile commands to run and develop the project:
+- `make run`  
+  Launch the Streamlit app in headless mode. Visit the URL it prints (usually `http://localhost:8501`) to interact with the profiling demo.
 
-- `make run` - Run the Streamlit app.
-- `make dev` - Run the app with live reload.
-- `make profile` - Generate a YData profiling report.
-- `make html` - Generate an HTML report from the profiling.
-- `make bare` - Run the app without profiling.
+- `make dev`  
+  Start Streamlit with its autoreload feature. The page refreshes automatically when you edit the Python code—useful during live instruction.
 
-## Code Quality
+## Generating a Stand-Alone Profile
 
-Run the following to check formatting and linting:
+- `make profile`  
+  Create `profile_report.html`, a static HTML report produced by YData Profiling. This is perfect for sharing a snapshot of the dataset or discussing the output slide-by-slide in class.
 
-```
-make check
-```
+## Keeping the Codebase Clean
 
-This runs **Black** and **Ruff** to ensure code style consistency.
+- `make check`  
+  Runs both **Black** and **Ruff**:
+  - **Black** re-formats your Python files to a consistent style so students focus on logic, not whitespace debates.
+  - **Ruff** is a fast linter; it spots common mistakes (unused imports, unreachable code, etc.) and enforces agreed-upon style rules.
 
-## Disclaimer
+Encourage learners to run `make check` before opening a pull request or sharing their work. Seeing how automated tools flag issues reinforces good habits early.
 
-This project is intended as a teaching demo and proof-of-concept. It is not production-ready and should be used for learning purposes only.
+## Suggested Classroom Activities
+
+- **Walkthrough:** Run `make profile`, open the generated HTML, and narrate what each section (overview, warnings, correlations, sample rows) reveals.
+- **Hands-On Task:** Provide a small CSV dataset and have students run the profiler, then answer guided questions about data quality or feature distributions.
+- **Extend the App:** Ask students to add a data upload widget or highlight specific metrics in the Streamlit UI to connect profiling insights to business questions.
+
+## Troubleshooting Tips
+
+- If Streamlit fails to start, ensure your virtual environment is active and that dependencies installed without errors.
+- If `make` is not available on your platform, you can run the underlying commands manually from the `Makefile` (e.g., `streamlit run app.py`).
+- Profiling large datasets can be slow; consider sampling or filtering in the notebook or app before profiling.
+
+---
+
+**Disclaimer:** This is a proof-of-concept for educational use and is not production hardened.

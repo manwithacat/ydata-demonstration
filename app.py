@@ -13,6 +13,10 @@ import seaborn as sns
 import base64
 import contextlib
 from io import StringIO
+import streamlit as st
+import streamlit.components.v1 as components
+import webbrowser
+
 
 # We rely on _silence_stdio() instead of env/warning filters; it's more robust across versions.
 
@@ -30,10 +34,6 @@ def _silence_stdio():
 
 with _silence_stdio():
     from ydata_profiling import ProfileReport
-
-import streamlit as st
-import streamlit.components.v1 as components
-import webbrowser
 
 # Silence Streamlit's bare-mode warning noise when launched as a plain script
 logging.getLogger("streamlit.runtime.scriptrunner_utils.script_run_context").setLevel(
