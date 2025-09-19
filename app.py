@@ -7,12 +7,13 @@ Notes:
   (which otherwise can trigger Streamlit reruns and cause nested renders).
 """
 
-import os
-import logging
-import seaborn as sns
+import argparse
 import base64
 import contextlib
+import logging
+import os
 from io import StringIO
+import seaborn as sns
 import streamlit as st
 import streamlit.components.v1 as components
 import webbrowser
@@ -79,24 +80,47 @@ def _build_profile_html():
     return html
 
 
-if _running_in_streamlit():
+def main(mode: str | None = None) -> None:
+    """Entry point for CLI execution.
+    Default behaviour when run directly is to generate a static HTML profile.
+    Use Streamlit via `make run` / `streamlit run app.py` rather than invoking here.
+    """
+    # If running under Streamlit runtime, render the embedded report
+    if _running_in_streamlit():
 
-    @st.cache_data(show_spinner="Building YData Profile HTML…")
-    def get_profile_html():
-        return _build_profile_html()
+        @st.cache_data(show_spinner="Building YData Profile HTML…")
+        def get_profile_html():
+            return _build_profile_html()
 
-    st.set_page_config(layout="wide")
-    st.title("YData Profiling + Streamlit Test")
-    st.write("Here's the profile report in HTML form:")
-    profile_html = get_profile_html()
-    # Render via data: URL to isolate the report and prevent iframe-within-iframe stacking
-    b64 = base64.b64encode(profile_html.encode("utf-8")).decode("ascii")
-    components.iframe(f"data:text/html;base64,{b64}", height=3000, scrolling=True)
-else:
-    # Use the same cached builder for script mode
+        st.set_page_config(layout="wide")
+        st.title("YData Profiling + Streamlit Test")
+        st.write("Here's the profile report in HTML form:")
+        profile_html = get_profile_html()
+        b64 = base64.b64encode(profile_html.encode("utf-8")).decode("ascii")
+        components.iframe(f"data:text/html;base64,{b64}", height=3000, scrolling=True)
+        return
+
+    # If explicitly asked for streamlit mode outside the runtime, hint how to run it
+    if mode == "streamlit":
+        print("[hint] Run Streamlit via: make run  (or)  streamlit run app.py")
+        return
+
+    # Otherwise, default to writing a static HTML report
     profile_html = _build_profile_html()
     with open("profile_report.html", "w", encoding="utf-8") as f:
         f.write(profile_html)
     print("Profile report saved to profile_report.html")
     abs_path = os.path.abspath("profile_report.html")
     webbrowser.open(f"file://{abs_path}")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="YData Profiling demo entrypoint")
+    parser.add_argument(
+        "--mode",
+        choices=["html", "streamlit"],
+        default="html",
+        help="Execution mode when run directly. Use 'streamlit' only as a hint; run Streamlit via 'make run'.",
+    )
+    args = parser.parse_args()
+    main(mode=args.mode)
