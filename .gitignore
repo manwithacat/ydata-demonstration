@@ -1,0 +1,32 @@
+# OS-specific
+.DS_Store
+.DS_Store?
+Thumbs.db
+
+# Python caches & environments
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.venv/
+env/
+venv/
+pip-wheel-metadata/
+.eggs/
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+.profile
+.jupyter/
+jupyter_notebooks/*.py
+
+# VS Code / IDEs
+.vscode/
+.idea/
+
+# GitHub config
+.github/
