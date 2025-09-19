@@ -12,7 +12,7 @@ For teaching purposes we surface the same profiler inside a lightweight Streamli
 
 ## Dataset Source
 
-The default dataset bundled with this demo is the Titanic passenger manifest from the C1 learning project. It offers a classic mix of categorical and numerical features that spark discussions about survival rates, class imbalance, and data quality. Feel free to swap in your own CSV to tailor the exercise to your cohort.
+The default dataset bundled with this demo is the Titanic passenger manifest from the Seaborn module. It offers a classic mix of categorical and numerical features that spark discussions about survival rates, class imbalance, and data quality. Feel free to swap in your own CSV to tailor the exercise to your cohort.
 
 ## Prerequisites
 
